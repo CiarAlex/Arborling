@@ -151,6 +151,10 @@ $('#buttonBigTree').click(function(){
 	tick();
 })
 
+$('#checkboxTopo').on('change', function(){
+	tick();
+})
+
 /**
  * Function called for each movement in the tree, perform the dynamic processing
  */
@@ -164,16 +168,34 @@ $('#buttonBigTree').click(function(){
 		var circleSize = document.getElementById('newCircleSize').value; // Size of the circles
 		var lineSize = document.getElementById('newLineSize').value; //Size of the lines
 		var colorBackground = document.getElementById('newColorBackground').value;//Color of the SVG background
+		var checkTopo = $('#checkboxTopo')[0].checked;//Get the status of the checkbox
 		
-		var color;
+		var color,
+			label;
 		var tabsource = [];
 		var tab_color = [];
-		var i = -1;
+		var i = -1,
+			a = 0;
 		$.each(coordonnee.links , function(index, value){
 			tabsource.push(value.source.label);
 		})
 		
 		rect.attr("fill", colorBackground);
+		
+		$.each(coordonnee.links , function(key, value)
+		{
+			//If the target is not a source
+			if(jQuery.inArray(value.target.label, tabsource) == -1)
+			{
+				a++;
+				color = colorLeaf;
+			}
+			else
+			{
+				color = colorBranch;
+			}
+			tab_color.push(color);
+		})
 		
 		//Building of links
 		link.attr("x1", function(d) { return d.source.x * resize; })
@@ -181,19 +203,6 @@ $('#buttonBigTree').click(function(){
 	      	.attr("x2", function(d) { return d.target.x * resize; })
 	      	.attr("y2", function(d) { return d.target.y * resize; })
 	      	.attr("stroke", function(d){
-	    		$.each(coordonnee.links , function(key, value)
-				{
-	    			//If the target is not a source
-					if(jQuery.inArray(value.target.label, tabsource) == -1)
-					{
-						color = colorLeaf;
-					}
-					else
-					{
-						color = colorBranch;
-					}
-					tab_color.push(color);
-				})
 				i++;
 				return tab_color[i];
 	    	})
@@ -220,15 +229,18 @@ $('#buttonBigTree').click(function(){
 		$.each(coordonnee.nodes, function(key, value)
 		{
 			var posx = "start";
-			var positext = 5;
+			var positext = 3;
+			positext = positext - -circleSize;
 			if(value.x < valuefatherofall)
 			{
 				posx = "end";
-				positext = -5;
+				positext = -3;
+				positext = positext - circleSize;
 			}
 			tabpositext.push(positext);
 			tabpos.push(posx);
 		})
+		
 		//Location of circles and direction of text
 		node.attr("transform", function(d) { return "translate(" + d.x * resize + "," + d.y * resize + ")"; })
 		  .attr("text-anchor", function(d)
@@ -237,9 +249,29 @@ $('#buttonBigTree').click(function(){
 	    		 return tabpos[m];
 		      });
 		
+		var b = 0;
 		//Location and size of labels
 		text.attr("cursor", "pointer")
-		   .text(function(d) { return d.label; })
+		   .text(function(d)
+			{
+			   if(checkTopo == false)
+			   {
+				   if(b < a)
+				   {
+					   b++;
+					   return d.label;
+				   }
+				   else
+				   {
+					   label = "";
+					   return label;
+				   }
+			   }
+			   else
+			   {
+				   return d.label;
+			   }
+			})
 		   .attr("x", function(d)
 			{
 				n++;
@@ -257,7 +289,7 @@ function arboree()
 {
 	var wi = innerWidth * 0.50;
 	var he = innerHeight * 0.60;
-	buildTree('#littleTree',wi,he, "littleTree");
+	buildTree('#littleTree',wi,he, "svglittleTree");
 	document.getElementById('buttonBigTree').style.display = 'block';
 	$("#log").draggable({"cursor": "move", "handle" : "#topLog", "cancel": "#botLog", "containment": "#container"});
 }

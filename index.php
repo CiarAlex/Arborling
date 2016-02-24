@@ -158,6 +158,11 @@
 									<input id="valueCircleSize" type="text" readonly="readonly" value="2">
 					        	</div>
 					        </li>
+					        <li class="accordion-item" data-accordion-item>
+					        	<a class="accordion-title">Topologie</a>
+					        	<div class="accordion-content" data-tab-content>
+					        		<label><input id="checkboxTopo" type="checkbox" checked>Afficher</label>
+					        	</div>
 					     </ul>
 					</div>
 					<div class="columns small-2 buttonSaveTree">

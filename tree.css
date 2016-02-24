@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+
+.bigTree{
+	position: fixed;
+	padding: 0px;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.modalContainer{
+	position: relative;
+}
+
+.options{
+	position: absolute;
+}
+
+.buttonSaveTree{
+	position: absolute;
+	bottom: 5%;
+	right: 0%;
+}
+
+.rangeslider{
+	width: 100%;
+}
+
+.buttonExitBigTree{
+	top: 10px;
+}
+
+#buttonBigTree{
+	position: absolute;
+	right: 10px;
+	display: none;
+	padding-left: 0.4em;
+	padding-right: 0.4em;
+	padding-top: 0.4em;
+	padding-bottom: 0.2em;
+}

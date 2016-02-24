@@ -1,0 +1,94 @@
+@CHARSET "UTF-8";
+.topbar{
+	height: 4em;
+	background: #333;
+}
+
+img{
+	height: 2em;
+	margin-top: 0.5em;
+}
+
+.container{
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+}
+
+.title{
+	margin-left: 0em;
+	font-style: italic;
+	font-size: xx-large;
+	font-family: serif;
+	font-weight: bolder;
+	color: silver;
+}
+
+.leftColumn, .rightColumn{
+	height: 570px;
+}
+
+.littleTitle{
+	text-align: center;
+	font-style: italic;
+	font-size: large;
+	font-family: serif;
+	font-weight: bolder;
+	color: silver;
+}
+
+.matrice{
+	min-width: 300px;
+	min-height: 300px;
+	max-height: 400px;
+}
+
+.error{
+	display: none;
+	width: 10em;
+}
+
+.arrowMid{
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	font-size: 3.5em;
+	color: #2199e8;
+}
+
+.log{
+	display: none;
+	background-color: black;
+	color: white;
+	opacity: 0.8;
+	z-index: 1;
+	top: -370px;
+	right: -30px;
+	width: 540px;
+}
+
+.topLog{
+	top:0px;
+	height: 30px;
+}
+
+.botLog{
+	height: 310px;
+	overflow: auto;
+}
+
+#buttonExitLog{
+	top: 0px;
+}
+
+footer{
+	background:#333;
+	position:fixed;
+	width:100%;
+	bottom: 0em;
+}
+
+.liens{
+	text-align: center;
+	font-size: small;
+}

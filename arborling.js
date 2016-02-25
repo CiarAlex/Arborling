@@ -22,6 +22,8 @@
 var charge = 0; //Charge of the graph
 var gravity = 0; //Gravity of the graph
 
+console.log(labels);
+
 /**
  * Build the tree
  * @param tree_id : identifiant HTML correspondant à l'endroit où l'arbre doit être crée
@@ -281,6 +283,7 @@ $('#checkboxTopo').on('change', function(){
 			.attr("fill", colorText)
 			.on("dblclick", dblclick);
 	}
+	
 	function dblclick(d)
 	{
 		var newText = window.prompt("Entrez le nouveau text :", "");

@@ -19,11 +19,92 @@
     You should have received a copy of the GNU General Public License
     along with Arborling.  If not, see <http://www.gnu.org/licenses/>.
 """
-import sys
+import math
 from scipy.stats import chi2_contingency
+import sys
+import json
+
 
 SEUIL_MAX = 11
 
+"""
+COOR CALCUL
+"""
+SIZE_X = 1000 # px
+SIZE_Y = 1000 # px
+
+MAX_LINE_SIZE = 200
+
+"""
+"""
+class Node:
+    def __init__(self, id):
+        self.id = id;
+        self.x = SIZE_X/2;
+        self.y = SIZE_Y/2;
+        self.fils = {};
+        self.distances = {};
+
+"""
+"""
+def print_tree(tree):
+    print tree.id, tree.x, tree.y
+    for id, distance in tree.distances.iteritems():
+        print distance, " -->"
+        print_tree(tree.fils[id])
+   
+"""
+""" 
+def nb_feuille(tree):
+    if tree.fils == {}:
+        return 1
+    else:
+        cpt = 0
+        for node in tree.fils.values():
+            cpt += nb_feuille(node)
+        return cpt
+
+"""
+"""
+def setCoordinate(tree, alpha, teta):
+    for id, node in tree.fils.iteritems():
+        nf = nb_feuille(node);
+        distance = tree.distances[id] + MAX_LINE_SIZE
+        
+        #int Xb = (int) Math.round(root.getX() + distance * Math.cos(Math.toRadians(alpha + ((nbFeuille * teta) / 2))));
+        #int Yb = (int) Math.round(root.getY() + distance * Math.sin(Math.toRadians(alpha + ((nbFeuille * teta) / 2))));;
+        
+        node.x = round(tree.x + distance * math.cos(math.radians(alpha + ((nf*teta) / 2))))
+        #print tree.x, distance, nf, (alpha + ((nf*teta) / 2)), math.radians(alpha + ((nf*teta) / 2)), math.cos(math.radians(alpha + ((nf*teta) / 2))), node.x  
+        node.y = round(tree.y + distance * math.sin(math.radians(alpha + ((nf*teta) / 2))))
+        
+        setCoordinate(node, alpha, teta);
+        alpha += nf * teta;
+        
+"""
+Calcul coord for each node
+"""
+def calcul_coord(tree):
+    nodes = {}
+    
+    root_id = 0
+    for father_id in tree.keys():
+        for son_id in tree[father_id].keys():
+            root_id += 1
+            father_node = nodes.get(father_id, Node(father_id))
+            son_node = nodes.get(son_id, Node(son_id))
+            father_node.fils[son_id] = son_node
+            father_node.distances[son_id] = tree[father_id][son_id]
+            
+            nodes[father_id] = father_node
+            nodes[son_id] = son_node
+            
+    nf = nb_feuille(nodes[root_id])
+    
+    setCoordinate(nodes[root_id], 0, 360 / nf);
+    
+    return nodes, root_id
+    
 """
 Return Ki2 matrix
 """       
@@ -143,12 +224,6 @@ def distance_moyenne(i, j, dist_matrix):
             return 0
         else:
             return x;
-        
-"""
-Calcul coord for each node
-"""
-def calcul_coord(tree):
-    ""
 
 """
 Return the tree (tree = "codage pere/fils")
@@ -332,7 +407,7 @@ def calcul_arbre(dist_matrix):
         if i != indice_max:
             tree[indice_max][i] = dist_matrix[indice_max][i]
     
-    return tree
+    return calcul_coord(tree)
             
 """
 Test the algorithm
@@ -375,49 +450,29 @@ def main():
         matrix = calcul_khi2(matrix)
         print_matrix(matrix)
     
-    tree = calcul_arbre(matrix)
-    coord = calcul_coord(tree)
+    nodes, root_id = calcul_arbre(matrix)
+    #print_tree(nodes[root_id])
     
-    """
-    f = open(sys.argv[1])
-    dist_matrix = {}
-    i = 0
-    for line in f:
-        dist_matrix[i] = dist_matrix.get(i, {})
-        if is_square:
-            j = 0
-        else:
-            j = i+1
-        for value in line.split():
-            if is_square:
-                dist_matrix[i][j] = float(value)
-            else:
-                dist_matrix[i][j] = float(value)
-                dist_matrix[j] = dist_matrix.get(j, {})
-                dist_matrix[j][i] = float(value)
-                dist_matrix[i][i] = 0
-                dist_matrix[j][j] = 0
-            j += 1
-        i += 1
+    data_json = {}
+    data_json["nodes"] = []
+    data_json["links"] = []
     
-    print dist_matrix
-    
-    if is_triangular(dist_matrix):
-        tree = calcul_arbre(dist_matrix)
+    for node in nodes.values():
+        n = {}
+        n["x"] = node.x
+        n["y"] = node.y
+        n["label"] = node.id
+        data_json["nodes"] += [n]
         
-        f.close()
-        f = open("result.txt", "w")
-        iP = 0
-        for father in tree.keys():
-            for son in tree[father].keys():
-                f.write(str(father+1) + "," + str(son+1) + "," + str(tree[father][son]) + "\n")
-                iP += 1
-                print str(father+1) + " ***Pere: " + str(son+1) + " ***Fils: " + str(tree[father][son])
-        f.write(str(iP) + "\n")
-        f.close()
-    else:
-        print "Err: bad input matrix!"
-    """
+        for son in node.fils.values():
+            l = {}
+            l["source"] = node.id
+            l["target"] = son.id
+            data_json["links"] += [l]
+            
+    f = open(sys.argv[1].replace("txt", "json"), "w")
+    f.write(json.dumps(data_json))
+    f.close()
     
 if __name__ == '__main__':
     main()

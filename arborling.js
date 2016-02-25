@@ -278,7 +278,14 @@ $('#checkboxTopo').on('change', function(){
 				return tabpositext[n];
 			})
 			.attr("font-size", textSize)
-			.attr("fill", colorText);
+			.attr("fill", colorText)
+			.on("dblclick", dblclick);
+	}
+	function dblclick(d)
+	{
+		var newText = window.prompt("Entrez le nouveau text :", "");
+		d.label = newText;
+		tick();
 	}
 }
 /**
@@ -350,7 +357,7 @@ $("#buttonSaveTree").click(function(){
 	    var datejour = ladate.getHours() + "-" + ladate.getMinutes() + "-" + ladate.getSeconds() + "--" + ladate.getDate() + "-" + (ladate.getMonth()+1) + "-" + ladate.getFullYear();
 	    var a = document.createElement("a");
 		  a.download = "export_tree"+ datejour +".png";
-		  a.href = canvas.toDataURL( "image/png" ); 
+		  a.href = canvas.toDataURL( "image/png" );
 		  document.body.appendChild(a);
 		  a.click();
 	};

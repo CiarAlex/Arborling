@@ -5,6 +5,8 @@ ini_set('display_errors', '1');
 
 $display = "";
 $displayNone = "";
+$class = "";
+$erreur = "";
 //IMPORT CSV
 if(isset($_FILES['doccsv']))
 {

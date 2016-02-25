@@ -34,19 +34,12 @@ def calcul_khi2(distance_matrix):
     for key1 in distance_matrix.keys():
         result[key1] = {}
         for key2 in distance_matrix.keys():
-            result[key1][key2], p, dof, ex = chi2_contingency([distance_matrix[key1].values(), distance_matrix[key2].values()])
+            if key1 == key2:
+                result[key1][key2] = 0
+            else:
+                result[key1][key2], p, dof, ex = chi2_contingency([distance_matrix[key1].values(), distance_matrix[key2].values()])
     
     return result
-
-"""
-Return True if the matrix is triangular form, False otherwise
-"""
-def is_triangular(matrix):
-    for line in matrix.iterkeys():
-        for column in matrix[line].iterkeys():
-            if matrix[line][column] != matrix[column][line]:
-                return False
-    return True
 
 """
 Return True is dist(ab) is the shortest
@@ -150,6 +143,12 @@ def distance_moyenne(i, j, dist_matrix):
             return 0
         else:
             return x;
+        
+"""
+Calcul coord for each node
+"""
+def calcul_coord(tree):
+    ""
 
 """
 Return the tree (tree = "codage pere/fils")
@@ -344,19 +343,42 @@ def main():
         print 'Err: bad parameters!'
         return 1
     
-    print sys.argv[1] 
     f = open(sys.argv[1])
 
     # CREATE THE INPUT MATRIX    
-    is_square = True
-    for line1 in f:
-        if not is_square:
-            break
-        for line2 in f:
-            if len(line1.split()) != len(line2.split()):
-                is_square = False
-                break
+    matrix = {}
+    i = 0
+    for line in f:
+        matrix[i] = {}
+        j = 0
+        for value in line.split():
+            matrix[i][j] = float(value)
+            j += 1
+        i += 1
     f.close()
+    print_matrix(matrix)
+
+    # detect if it's square
+    is_square = True
+    for i in matrix.keys():
+        for j in matrix[i].keys():
+            try:
+                if matrix[i][j] != matrix[j][i]:
+                    is_square = False
+                    break;
+            except:
+                is_square = False
+                break;
+    print "Matrice de  distances : ", is_square
+
+    if not is_square:
+        matrix = calcul_khi2(matrix)
+        print_matrix(matrix)
+    
+    tree = calcul_arbre(matrix)
+    coord = calcul_coord(tree)
+    
+    """
     f = open(sys.argv[1])
     dist_matrix = {}
     i = 0
@@ -395,6 +417,7 @@ def main():
         f.close()
     else:
         print "Err: bad input matrix!"
+    """
     
 if __name__ == '__main__':
     main()

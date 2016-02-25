@@ -48,9 +48,12 @@ if (isset($_POST["matrix"]))
 	$log = str_replace("\n", "<br />", $log);
 
 	//$tree = file_get_contents($request_id . ".res");
-	$tree = file_get_contents("test_data.json");
-	echo "<script>var coordonnee = " . $tree . "</script>";
+	//$tree = file_get_contents("test_data.json");
+	//echo "<script>var coordonnee = " . $tree . "</script>";
 	exec('rm ' . $request_id . ".*");
+	
+	echo $log;
+	die;
 
 }
 else

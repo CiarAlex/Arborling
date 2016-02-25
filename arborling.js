@@ -284,7 +284,10 @@ $('#checkboxTopo').on('change', function(){
 	function dblclick(d)
 	{
 		var newText = window.prompt("Entrez le nouveau text :", "");
-		d.label = newText;
+		if(newText !== null)
+		{
+			d.label = newText;
+		}
 		tick();
 	}
 }

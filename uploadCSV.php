@@ -3,6 +3,8 @@ require_once 'index.php';
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+$display = "";
+$displayNone = "";
 //IMPORT CSV
 if(isset($_FILES['doccsv']))
 {

@@ -75,7 +75,7 @@ function buildTree(tree_id, width, height, svg_id)
 		.attr("width", width)
 		.attr("height", height)
 		.attr("id", svg_id);
-	
+
 	var rect = svgContainer.append("rect")
 					    .attr("width", "100%")
 					    .attr("height", "100%");
@@ -329,7 +329,7 @@ $("#buttonBigTree").click(function()
 	}
 });
 
-$("#options").draggable({"containment": "#bigTree"});
+$("#options").draggable({"containment": "#modalBigTree"});
 $("#buttonSaveTree").draggable({"containment": "#bigTree"});
 
 $("#buttonSaveTree").click(function(){

@@ -22,6 +22,10 @@
 var charge = 0; //Charge of the graph
 var gravity = 0; //Gravity of the graph
 
+var ORIGIN_X = 400;
+var ORIGIN_Y = 100;
+var RESIZE_FACTOR = 0.05;
+
 console.log(labels);
 
 /**
@@ -35,9 +39,29 @@ function buildTree(tree_id, width, height, svg_id)
 {
 	var resize = 1,//Coefficient used to resize the tree
 		maxvaluex = 0,
-		maxvaluey = 0;
+		maxvaluey = 0,
+		minvaluex = 0,
+		minvaluey = 0;
+	
 	$.each(coordonnee.nodes, function(index, value)
 	{
+		if(value.x-ORIGIN_X < minvaluex)
+		{
+			minvaluex = value.x-ORIGIN_X;
+		}
+		if(value.y-ORIGIN_Y < minvaluey)
+		{
+			minvaluey = value.y-ORIGIN_Y;
+		}
+	});
+	
+	console.log(minvaluex);
+	console.log(minvaluey);
+	
+	$.each(coordonnee.nodes, function(index, value)
+	{
+		value.x = value.x - minvaluex;
+		value.y = value.y - minvaluey;
 		if(value.x >= maxvaluex)
 		{
 			maxvaluex = value.x;
@@ -47,14 +71,15 @@ function buildTree(tree_id, width, height, svg_id)
 			maxvaluey = value.y;
 		}
 	})
+	
 	//Tree resizing according to SVG height and width
 	if(maxvaluex > width)
 	{
-		resize = width/maxvaluex;
+		resize = width/maxvaluex - RESIZE_FACTOR;
 	}
 	if(maxvaluey * resize > height)
 	{
-		resize = height/maxvaluey;
+		resize = height/maxvaluey - RESIZE_FACTOR;
 	}
 	var force = d3.layout.force()
 		.size([width, height])
@@ -251,7 +276,8 @@ $('#checkboxTopo').on('change', function(){
 	    		 return tabpos[m];
 		      });
 		
-		var b = 0;
+		var b = 0,
+			k = 0;
 		//Location and size of labels
 		text.attr("cursor", "pointer")
 		   .text(function(d)
@@ -260,8 +286,17 @@ $('#checkboxTopo').on('change', function(){
 			   {
 				   if(b < a)
 				   {
-					   b++;
-					   return d.label;
+					   if(b < labels.length)
+					   {
+						   	label = labels[b];
+						   	b++;
+						   	return label;
+					   }
+					   else
+					   {
+						   b++;
+						   return d.label;
+					   }
 				   }
 				   else
 				   {
@@ -271,7 +306,16 @@ $('#checkboxTopo').on('change', function(){
 			   }
 			   else
 			   {
-				   return d.label;
+				   if(k < labels.length)
+				   {
+					   	label = labels[k];
+					   	k++;
+					   	return label;
+				   }
+				   else
+				   {
+					   return d.label;
+				   }
 			   }
 			})
 		   .attr("x", function(d)

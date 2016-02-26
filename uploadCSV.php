@@ -65,6 +65,8 @@ if(isset($_FILES['doccsv']))
 				}
 			}
 		}
+		$matrix = $resultMatrice;
+		$textLabel = $resultLabel;
 		$class = "success";
 		$erreur = "Upload réussie !";
 	}

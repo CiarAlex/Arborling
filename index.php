@@ -73,7 +73,7 @@
 				<div id="textLabelMatrice">
 					<form id="matriceform" action="#" method="POST" enctype="multipart/form-data">
 						<input id="textLabel" name="textLabel" type="text" class="textLabel" placeholder="Étiquettes de l'arbre" value="<?php echo $textLabel;?>">
-						<textarea id="textareaMatrice" name="matrix" class="matrice" placeholder="Écrivez vos données ici"><?php echo $matrix; ?></textarea>
+						<textarea id="textareaMatrice" name="matrix" class="matrice" placeholder="Écrivez vos données ici"><?php echo $matrix;?></textarea>
 					</form>
 				</div>
 				<div class="row">

@@ -332,12 +332,19 @@ $('#checkboxTopo').on('change', function(){
 	}
 	function dblclick(d)
 	{
-		var newText = window.prompt("Entrez le nouveau text :", "");
-		if(newText !== null)
-		{
-			labels[d.label] = newText;
-		}
-		tick();
+		//var newText = window.prompt("Entrez le nouveau texte :", "");
+		$("#modalEditText").foundation('open');
+		document.getElementById('inputRename').value = "";
+		document.getElementById('inputRename').focus();
+		$("#buttonRename").click(function(){
+			var newText = document.getElementById('inputRename').value;
+			if(newText !== null && newText !== "")
+			{
+				labels[d.label] = newText;
+			}
+			d = "";
+			tick();
+		})
 	}
 }
 /**
@@ -418,6 +425,7 @@ $("#buttonSaveTree").click(function(){
 	};
 })
 
-/*$( "#openModalError" ).on( "click", function() {
+if(errorMatrix == 'error')
+{
 	$('#modalError').foundation('open');
-});*/
+}

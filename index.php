@@ -174,14 +174,24 @@
 				</div>
 			</div>
 			
-			<!-- <div id="modalError" class="tiny reveal" data-reveal>
-				<span>Une erreur interne s'est produite. Essayez avec une autre matrice.</span>
+			<div id="modalError" class="small reveal" data-reveal>
+				<h3>Une erreur s'est produite !</h2>
+				<span>Une erreur interne s'est produite. Les calculs sur cette matrice n'ont pas pu être effectués. Essayez avec une autre matrice.</span><br><br>
+				<button class="tiny button" data-close aria-label="Close modal" type="button">Continuer</button>
 				<button class="close-button" data-close aria-label="Close modal" type="button">
 					<span aria-hidden="true">&times;</span>
 			    </button>
 			</div>
-			<a id="openModalError" type="button" class="button" data-open="modalError" style="display: none;"></a>
-			 -->
+			
+			<div id="modalEditText" class="tiny reveal" data-reveal>
+				<h3>Renommer l'étiquette</h3>
+				<span>Entrez le nouveau texte :</span>
+				<input id="inputRename" type="text">
+				<button id="buttonRename" class="tiny button" data-close aria-label="Close modal" type="button">Renommer</button>
+				<button class="close-button" data-close aria-label="Close modal" type="button">
+					<span aria-hidden="true">&times;</span>
+			    </button>
+			</div>
 			 <span class="fi-arrow-right arrowMid"></span>
 			<!-- BUTTON HELP - JOYRIDE -->
 			<div style="display: none">

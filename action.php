@@ -59,11 +59,11 @@ $log = str_replace("\n", "<br />", $log);
 /* GET RESULTS */
 
 $tree = @file_get_contents($request_id . ".json");
+echo "<script>var errorMatrix = ''</script>";
 if($tree === FALSE)
 {
 	$tree = "{}";
-	echo "<script>alert(\"Un problème interne est survenu ! Essayez avec une autre matrice.\")</script>";
-	//echo "<script>var errorMatrix = '' </script>";
+	echo "<script>errorMatrix = 'error' </script>";
 }
 echo "<script>var coordonnee = " . $tree . "</script>";
 echo "<script>var labels = " . json_encode($labels_dic) . "</script>";

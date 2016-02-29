@@ -173,7 +173,16 @@
 			    	</button>
 				</div>
 			</div>
-			<span class="fi-arrow-right arrowMid"></span>
+			
+			<!-- <div id="modalError" class="tiny reveal" data-reveal>
+				<span>Une erreur interne s'est produite. Essayez avec une autre matrice.</span>
+				<button class="close-button" data-close aria-label="Close modal" type="button">
+					<span aria-hidden="true">&times;</span>
+			    </button>
+			</div>
+			<a id="openModalError" type="button" class="button" data-open="modalError" style="display: none;"></a>
+			 -->
+			 <span class="fi-arrow-right arrowMid"></span>
 			<!-- BUTTON HELP - JOYRIDE -->
 			<div style="display: none">
 				<ol id="joyrideHelp" >

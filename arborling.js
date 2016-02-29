@@ -26,8 +26,6 @@ var ORIGIN_X = 400;
 var ORIGIN_Y = 100;
 var RESIZE_FACTOR = 0.05;
 
-console.log(labels);
-
 /**
  * Build the tree
  * @param tree_id : identifiant HTML correspondant à l'endroit où l'arbre doit être crée
@@ -54,9 +52,6 @@ function buildTree(tree_id, width, height, svg_id)
 			minvaluey = value.y-ORIGIN_Y;
 		}
 	});
-	
-	console.log(minvaluex);
-	console.log(minvaluey);
 	
 	$.each(coordonnee.nodes, function(index, value)
 	{
@@ -275,7 +270,6 @@ $('#checkboxTopo').on('change', function(){
 	    		 m++;
 	    		 return tabpos[m];
 		      });
-		
 		var b = 0,
 			k = 0;
 		//Location and size of labels
@@ -314,7 +308,16 @@ $('#checkboxTopo').on('change', function(){
 				   }
 				   else
 				   {
-					   return d.label;
+					   k++;
+					   if(d.label == "")
+					   {
+						   label = labels[k];
+						   return label;
+					   }
+					   else
+					   {
+						   return d.label;
+					   }
 				   }
 			   }
 			})
@@ -327,13 +330,12 @@ $('#checkboxTopo').on('change', function(){
 			.attr("fill", colorText)
 			.on("dblclick", dblclick);
 	}
-	
 	function dblclick(d)
 	{
 		var newText = window.prompt("Entrez le nouveau text :", "");
 		if(newText !== null)
 		{
-			d.label = newText;
+			labels[d.label] = newText;
 		}
 		tick();
 	}
@@ -412,3 +414,7 @@ $("#buttonSaveTree").click(function(){
 		  a.click();
 	};
 })
+
+/*$( "#openModalError" ).on( "click", function() {
+	$('#modalError').foundation('open');
+});*/

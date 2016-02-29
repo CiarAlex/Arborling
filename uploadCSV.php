@@ -29,6 +29,7 @@ if(isset($_FILES['doccsv']))
 		while(($data = fgetcsv($handle, 1000, ",")) !== false)
 		{
 			array_push($elmCSV, $data);
+			$column = count($data);
 			$row++;
 		}
 		fclose($handle);
@@ -36,7 +37,7 @@ if(isset($_FILES['doccsv']))
 		//FOR A LINE
 		for($i = 0; $i < $row; $i++)
 		{	//FOR AN ELEMENT OF THE LINE
-			for($j = 0; $j < $row; $j++)
+			for($j = 0; $j < $column; $j++)
 			{	//IF FIRST LINE, FILL THE TEXTLABEL
 				if($i == 0)
 				{	//IF $resultLabel EMPTY ADD NEW ELEMENT
@@ -46,7 +47,7 @@ if(isset($_FILES['doccsv']))
 					}//ELSE ADD SPACE AND NEW ELEMENT
 					else
 					{	//IF NOT THE LAST ELEMENT ADD SPACE AND NEW ELEMENT
-						if($j !== $row - 1)
+						if($j !== $column)
 						{
 							$resultLabel = $resultLabel. ' ' .$elmCSV[$i][$j];
 						}
@@ -54,9 +55,9 @@ if(isset($_FILES['doccsv']))
 				}//ELSE, FILL THE TEXTAREA
 				else
 				{	//IF LAST ELEMENT OF THE LINE, MAKE A NEW LINE
-					if($j == $row - 1)
+					if($j == $column - 1)
 					{
-						$resultMatrice = $resultMatrice.PHP_EOL;
+						$resultMatrice = $resultMatrice. ' ' .$elmCSV[$i][$j].PHP_EOL;
 					}//ELSE ADD SPACE AND NEW ELEMENT
 					else
 					{

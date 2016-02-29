@@ -34,7 +34,7 @@ $matrix = "0 1 1 3 2 1 3
 2 1 3 1 0 2 6
 1 2 5 3 2 0 2
 3 4 2 1 6 2 0";
-$textLabel = "A B C D E F G H I";
+$textLabel = "A B C D E F G";
 } else {
 $matrix = $_POST["matrix"];
 $textLabel = $_POST["textLabel"];
@@ -57,7 +57,13 @@ $log = file_get_contents($request_id . ".log");
 $log = str_replace("\n", "<br />", $log);
 
 /* GET RESULTS */
-$tree = file_get_contents($request_id . ".json");
+
+$tree = @file_get_contents($request_id . ".json");
+if($tree === FALSE)
+{
+	$tree = "{}";
+	echo "<script>alert(\"Un problème interne est survenu ! Essayez avec une autre matrice.\")</script>";
+}
 echo "<script>var coordonnee = " . $tree . "</script>";
 echo "<script>var labels = " . json_encode($labels_dic) . "</script>";
 exec('rm ' . $request_id . ".*");

@@ -431,14 +431,13 @@ def main():
             j += 1
         i += 1
     f.close()
-    print_matrix(matrix)
 
     # detect if it's square
     is_square = True
     for i in matrix.keys():
         for j in matrix[i].keys():
             try:
-                if matrix[i][j] != matrix[j][i]:
+                if matrix[i][j] != matrix[j][i] or matrix[i][i] != 0:
                     is_square = False
                     break;
             except:
@@ -447,8 +446,14 @@ def main():
     print "Matrice de  distances : ", is_square
 
     if not is_square:
+        matrix_tmp = {}
+        for line, parts in matrix.iteritems():
+            for column, value in parts.iteritems():
+                matrix_tmp[column] = matrix_tmp.get(column, {})
+                matrix_tmp[column][line] = value
+        matrix = matrix_tmp
         matrix = calcul_khi2(matrix)
-        print_matrix(matrix)
+    print_matrix(matrix)
     
     nodes, root_id = calcul_arbre(matrix)
     #print_tree(nodes[root_id])

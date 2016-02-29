@@ -358,7 +358,10 @@ function arboree()
  */
 $("#buttonLog").click(function()
 {
-	document.getElementById('log').style.display = 'block';
+	if(document.getElementById("svglittleTree"))
+	{
+		document.getElementById('log').style.display = 'block';
+	}
 });
 
 $("#buttonExitLog").click(function()

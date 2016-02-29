@@ -63,6 +63,7 @@ if($tree === FALSE)
 {
 	$tree = "{}";
 	echo "<script>alert(\"Un problème interne est survenu ! Essayez avec une autre matrice.\")</script>";
+	//echo "<script>var errorMatrix = '' </script>";
 }
 echo "<script>var coordonnee = " . $tree . "</script>";
 echo "<script>var labels = " . json_encode($labels_dic) . "</script>";

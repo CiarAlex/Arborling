@@ -163,10 +163,11 @@
 					        	<div class="accordion-content" data-tab-content>
 					        		<label><input id="checkboxTopo" type="checkbox" checked>Afficher</label>
 					        	</div>
+					        </li>
 					     </ul>
 					</div>
-					<div class="columns small-2 buttonSaveTree">
-						<a id="buttonSaveTree" type="button" class="button" title="Sauvegarder votre arbre sous forme d'image">Enregistrer</a>
+					<div class="columns small-1 buttonSaveTree">
+						<a id="buttonSaveTree" type="button" class="small button" title="Sauvegarder votre arbre sous forme d'image">Enregistrer</a>
 					</div>
 					<button id="buttonExitBigTree" class="close-button buttonExitBigTree" data-close aria-label="Close modal" type="button">
 						<span aria-hidden="true">&times;</span>
@@ -202,7 +203,7 @@
 					</li>
 					<li data-id="textareaMatrice" data-button="Suivant" data-options="tipLocation:right;">
 				    	<h2>Matrice</h2>
-					    <p>Entrez vos données pour construire votre arbre</p>
+					    <p>Entrez vos données pour construire votre arbre.</p>
 					</li>
 					<li data-id="buttonFile" data-button="Suivant" data-options="tipLocation:top;">
 						<h2>Importer</h2>

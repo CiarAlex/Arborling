@@ -21,10 +21,25 @@
 
 var charge = 0; //Charge of the graph
 var gravity = 0; //Gravity of the graph
+var dataModal = 0; //Test calcul only one time when we open the modalBigTree
 
 var ORIGIN_X = 400;
 var ORIGIN_Y = 100;
-var RESIZE_FACTOR = 0.05;
+var RESIZE_FACTOR = 0.005;
+
+var textMat = document.getElementById("textareaMatrice").innerHTML;
+var textMatOrd = textMat.split("\n");
+for(i = 0; i < 1; i++){
+	res = textMatOrd[i].match(/ /g);
+}
+
+if(res.length <= 8)
+{
+	RESIZE_FACTOR = 0.05;
+} else if(res.length > 20)
+{
+	RESIZE_FACTOR = 0.003;
+}
 
 /**
  * Build the tree
@@ -127,12 +142,6 @@ function buildTree(tree_id, width, height, svg_id)
 		text = node.append("svg:text");
 	})();
 
-	var tabtarget = [];
-	$.each(coordonnee.links, function(key, value)
-	{
-		tabtarget.push(value.target.label);
-	})
-
 $('#newColorBranch').on('change', function(){
 	tick();
 })
@@ -177,6 +186,18 @@ $('#checkboxTopo').on('change', function(){
 	tick();
 })
 
+var tabtarget = [];
+$.each(coordonnee.links, function(key, value)
+{
+	tabtarget.push(value.target.label);
+})
+
+var tabsource = [];
+$.each(coordonnee.links , function(index, value)
+{
+	tabsource.push(value.source.label);
+})
+
 /**
  * Function called for each movement in the tree, perform the dynamic processing
  */
@@ -194,12 +215,18 @@ $('#checkboxTopo').on('change', function(){
 		
 		var color,
 			label;
-		var tabsource = [];
 		var tab_color = [];
 		var i = -1,
 			a = 0;
-		$.each(coordonnee.links , function(index, value){
-			tabsource.push(value.source.label);
+		
+		var valuefatherofall;
+		$.each(coordonnee.links, function(key, value)
+		{
+			//If the source is not a target
+			if(jQuery.inArray(value.source.label, tabtarget) == -1)
+			{
+				valuefatherofall = value.source.x;
+			}
 		})
 		
 		rect.attr("fill", colorBackground);
@@ -239,24 +266,15 @@ $('#checkboxTopo').on('change', function(){
 			tabpositext = [];
 		var m = -1,
 			n = -1;
-		var valuefatherofall;
-		$.each(coordonnee.links, function(key, value)
-		{
-			//If the source is not a target
-			if(jQuery.inArray(value.source.label, tabtarget) == -1)
-			{
-				valuefatherofall = value.source.x;
-			}
-		})
 		$.each(coordonnee.nodes, function(key, value)
 		{
 			var posx = "start";
-			var positext = 3;
+			var positext = 2;
 			positext = positext - -circleSize;
 			if(value.x < valuefatherofall)
 			{
 				posx = "end";
-				positext = -3;
+				positext = -2;
 				positext = positext - circleSize;
 			}
 			tabpositext.push(positext);
@@ -270,12 +288,14 @@ $('#checkboxTopo').on('change', function(){
 	    		 m++;
 	    		 return tabpos[m];
 		      });
+		
 		var b = 0,
 			k = 0;
 		//Location and size of labels
 		text.attr("cursor", "pointer")
 		   .text(function(d)
 			{
+			   //Display topology option
 			   if(checkTopo == false)
 			   {
 				   if(b < a)
@@ -316,7 +336,8 @@ $('#checkboxTopo').on('change', function(){
 					   }
 					   else
 					   {
-						   return d.label;
+						   labels.push(d.label + 1);
+						   return d.label + 1;
 					   }
 				   }
 			   }
@@ -330,9 +351,10 @@ $('#checkboxTopo').on('change', function(){
 			.attr("fill", colorText)
 			.on("dblclick", dblclick);
 	}
+	
+	//Rename option
 	function dblclick(d)
 	{
-		//var newText = window.prompt("Entrez le nouveau texte :", "");
 		$("#modalEditText").foundation('open');
 		document.getElementById('inputRename').value = "";
 		document.getElementById('inputRename').focus();
@@ -341,12 +363,21 @@ $('#checkboxTopo').on('change', function(){
 			if(newText !== null && newText !== "")
 			{
 				labels[d.label] = newText;
+				d = "";
 			}
-			d = "";
+			if(dataModal == 0)
+			{
+				var wi = innerWidth * 0.95;
+				var he = innerHeight * 0.95;
+				buildTree('#modalBigTree', wi, he, "bigTree");
+				dataModal = 1;
+			}
+			$("#modalBigTree").foundation('open');
 			tick();
 		})
 	}
 }
+
 /**
  * Function called in HTML to create the tree
  * draggable allow to move an element in a container
@@ -386,7 +417,6 @@ $("#buttonHelp").click(function()
 	});
 });
 
-var dataModal = 0;
 $("#buttonBigTree").click(function()
 {
 	if(dataModal == 0)
@@ -399,7 +429,6 @@ $("#buttonBigTree").click(function()
 });
 
 $("#options").draggable({"containment": "#modalBigTree"});
-$("#buttonSaveTree").draggable({"containment": "#bigTree"});
 
 $("#buttonSaveTree").click(function(){
 	var svg = document.querySelector( "#bigTree" );
@@ -410,9 +439,8 @@ $("#buttonSaveTree").click(function(){
     canvas.width = svgSize.width;
     canvas.height = svgSize.height;
 	var ctx = canvas.getContext( "2d" );
-
 	var img = document.createElement( "img" );
-	img.setAttribute( "src", "data:image/svg+xml;base64," + btoa( svgData ) );
+	img.setAttribute( "src", "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent( svgData ))) );
 	img.onload = function() {
 	    ctx.drawImage( img, 0, 0 );
 	    var ladate = new Date();
@@ -429,3 +457,8 @@ if(errorMatrix == 'error')
 {
 	$('#modalError').foundation('open');
 }
+
+$("#buttonSend").click(function()
+{
+	$(this).fadeOut(500); // Fades out send button when it's clicked
+});

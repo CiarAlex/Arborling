@@ -33,11 +33,19 @@ for(i = 0; i < 1; i++){
 	res = textMatOrd[i].match(/ /g);
 }
 
-if(res.length <= 8)
+if(res.length < 8)
 {
+	ORIGIN_X = 200;
 	RESIZE_FACTOR = 0.05;
-} else if(res.length > 20)
+}
+else if(res.length >= 8 && res.length <= 30)
 {
+	ORIGIN_X = 400;
+	RESIZE_FACTOR = 0.01;
+}
+else if(res.length > 30)
+{
+	ORIGIN_X = 1000;
 	RESIZE_FACTOR = 0.003;
 }
 
@@ -350,7 +358,7 @@ $.each(coordonnee.links , function(index, value)
 			.attr("font-size", textSize)
 			.attr("fill", colorText)
 			.on("dblclick", dblclick);
-	}
+	}//END TICK()
 	
 	//Rename option
 	function dblclick(d)

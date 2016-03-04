@@ -431,7 +431,7 @@ def main():
             j += 1
         i += 1
     f.close()
-
+    
     # detect if it's square
     is_square = True
     for i in matrix.keys():

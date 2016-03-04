@@ -452,6 +452,7 @@ def main():
                 matrix_tmp[column] = matrix_tmp.get(column, {})
                 matrix_tmp[column][line] = value
         matrix = matrix_tmp
+        print matrix
         matrix = calcul_khi2(matrix)
     print_matrix(matrix)
     

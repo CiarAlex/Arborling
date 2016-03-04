@@ -23,16 +23,18 @@ var charge = 0; //Charge of the graph
 var gravity = 0; //Gravity of the graph
 var dataModal = 0; //Test calcul only one time when we open the modalBigTree
 
-var ORIGIN_X = 400;
+var ORIGIN_X;
 var ORIGIN_Y = 100;
-var RESIZE_FACTOR = 0.005;
+var RESIZE_FACTOR;
 
+//Count number of spaces of the first line
 var textMat = document.getElementById("textareaMatrice").innerHTML;
 var textMatOrd = textMat.split("\n");
 for(i = 0; i < 1; i++){
 	res = textMatOrd[i].match(/ /g);
 }
 
+//Tree position in the SVG and resize
 if(res.length < 8)
 {
 	ORIGIN_X = 200;
@@ -99,6 +101,7 @@ function buildTree(tree_id, width, height, svg_id)
 	{
 		resize = height/maxvaluey - RESIZE_FACTOR;
 	}
+	
 	var force = d3.layout.force()
 		.size([width, height])
 		.charge(charge)
@@ -150,57 +153,24 @@ function buildTree(tree_id, width, height, svg_id)
 		text = node.append("svg:text");
 	})();
 
-$('#newColorBranch').on('change', function(){
+$('#newColorBranch, #newColorLeaf, #newColorText, #newColorBackground, #newColorCircle,' +
+		'#textSize, #newCircleSize, #newLineSize, #checkboxTopo').on('change', function(){
 	tick();
 })
 
-$('#newColorLeaf').on('change', function(){
-	tick();
-})
-
-$('#newColorText').on('change', function(){
-	tick();
-})
-
-$('#newColorCircle').on('change', function(){
-	tick();
-})
-
-$('#newColorBackground').on('change', function(){
-	tick();
-})
-
-$('#textSize').on('change', function(){
-	tick();
-})
-
-$('#newCircleSize').on('change', function(){
-	tick();
-})
-
-$('#newLineSize').on('change', function(){
-	tick();
-})
-
-$('#buttonExitBigTree').click(function(){
-	tick();
-})
-
-$('#buttonBigTree').click(function(){
-	tick();
-})
-
-$('#checkboxTopo').on('change', function(){
+$('#buttonExitBigTree, #buttonBigTree').click(function(){
 	tick();
 })
 
 var tabtarget = [];
+//Table containing labels of all the targets
 $.each(coordonnee.links, function(key, value)
 {
 	tabtarget.push(value.target.label);
 })
 
 var tabsource = [];
+//Table containing labels of all the sources
 $.each(coordonnee.links , function(index, value)
 {
 	tabsource.push(value.source.label);
@@ -228,6 +198,7 @@ $.each(coordonnee.links , function(index, value)
 			a = 0;
 		
 		var valuefatherofall;
+		//Search the father of all
 		$.each(coordonnee.links, function(key, value)
 		{
 			//If the source is not a target
@@ -239,6 +210,7 @@ $.each(coordonnee.links , function(index, value)
 		
 		rect.attr("fill", colorBackground);
 		
+		//Table containing colors of links
 		$.each(coordonnee.links , function(key, value)
 		{
 			//If the target is not a source
@@ -357,11 +329,11 @@ $.each(coordonnee.links , function(index, value)
 			})
 			.attr("font-size", textSize)
 			.attr("fill", colorText)
-			.on("dblclick", dblclick);
+			.on("dblclick", rename);
 	}//END TICK()
 	
-	//Rename option
-	function dblclick(d)
+	//Rename function when double click on a word
+	function rename(d)
 	{
 		$("#modalEditText").foundation('open');
 		document.getElementById('inputRename').value = "";
@@ -425,6 +397,7 @@ $("#buttonHelp").click(function()
 	});
 });
 
+//Open a bigger SVG in a full screen modal
 $("#buttonBigTree").click(function()
 {
 	if(dataModal == 0)
@@ -436,8 +409,10 @@ $("#buttonBigTree").click(function()
 	}
 });
 
+//Set the options movable
 $("#options").draggable({"containment": "#modalBigTree"});
 
+//Save the tree as PNG
 $("#buttonSaveTree").click(function(){
 	var svg = document.querySelector( "#bigTree" );
 	var svgData = new XMLSerializer().serializeToString( svg );
@@ -452,7 +427,7 @@ $("#buttonSaveTree").click(function(){
 	img.onload = function() {
 	    ctx.drawImage( img, 0, 0 );
 	    var ladate = new Date();
-	    var datejour = ladate.getHours() + "-" + ladate.getMinutes() + "-" + ladate.getSeconds() + "--" + ladate.getDate() + "-" + (ladate.getMonth()+1) + "-" + ladate.getFullYear();
+	    var datejour = ladate.getHours() + "h" + ladate.getMinutes() + "m" + ladate.getSeconds() + "s--" + ladate.getDate() + "-" + (ladate.getMonth()+1) + "-" + ladate.getFullYear();
 	    var a = document.createElement("a");
 		  a.download = "export_tree"+ datejour +".png";
 		  a.href = canvas.toDataURL( "image/png" );
@@ -461,11 +436,13 @@ $("#buttonSaveTree").click(function(){
 	};
 })
 
+//Modal error
 if(errorMatrix == 'error')
 {
 	$('#modalError').foundation('open');
 }
 
+//ButtonSend is hidden during calculations
 $("#buttonSend").click(function()
 {
 	$(this).fadeOut(500); // Fades out send button when it's clicked

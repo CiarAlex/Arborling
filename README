@@ -5,7 +5,10 @@
 
 Calculations interpreting the data are done in the backend with python.( arboree.py ).
 The backend is called with PHP( action.php, uploadCSV.php ).
-The vizualisation is in HTML/CSS using Foundation library ( index.php, arborling.css, tree.css ) and JavaScript using jQuery library to build a correct tree. The dynamism of the tree is realized with d3 library. It creates SVG elements and makes them dynamic ( arborling.js, test_data.json, tools.js ).
+The vizualisation is in HTML/CSS using Foundation library ( index.php, arborling.css, tree.css ) 
+and JavaScript using jQuery library to build a correct tree. The dynamism of the tree is realized
+with d3 library. It creates SVG elements and makes them dynamic ( arborling.js, test_data.json, 
+tools.js ).
 Requires:
 --> apache server
 --> python 2.6 or greater

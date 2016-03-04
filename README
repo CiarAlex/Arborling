@@ -16,8 +16,25 @@ Requires:
 
 ** EXPLANATIONS **
 
-Arborling allow to analyse starting from a contingency table the distance between some nodes with the Chi-2 test. In the table, the nodes are the columns, and the attributs(links) of the nodes are the rows. It draws links between these nodes, links got a fix distance depending to the differences between the nodes (the more differences between them there are, the more distance is great) and the size of the SVG. These links are considered like vectors. The inside nodes often are numbers and the outside nodes often are labels. With these data, our calcul establish a triangular matrix that allow to calcul the coordinates of the nodes so it gives them a direction. All the details of calculations are available in the log element. The final form is a tree, this tree is dynamic thanks to d3 and JS. By clicking on a node we can move this one to a new position without changing the link distance, this can improve the readability of the tree.
+Arborling allow to analyse starting from a contingency table the distance between some nodes with
+the Chi-2 test. In the table, the nodes are the columns, and the attributs(links) of the nodes are
+the rows. It draws links between these nodes, links got a fix distance depending to the
+differences between the nodes (the more differences between them there are, the more distance is
+great) and the size of the SVG. These links are considered like vectors. The inside nodes often 
+are numbers and the outside nodes often are labels. With these data, our calcul establish a 
+triangular matrix that allow to calcul the coordinates of the nodes so it gives them a direction.
+All the details of calculations are available in the log element. The final form is a tree, this
+tree is dynamic thanks to d3 and JS. By clicking on a node we can move this one to a new position
+without changing the link distance, this can improve the readability of the tree.
 
 ** HOW IS IT WORKING ? **
 
-Arborling is easy to use. Simply put the data in the textarea and the label in the input text. Then clickon "Envoyer" to send the request to the server, then the tree appears. It can be enlarge by clicking on the icon on the top right of it. There is the possibility of moving every point/ label of the tree, do not hesitate especially if elements are overlapping. Users can also import CSV file directly in the textarea by clicking on "Importer CSV". If the data are valid, just click on "Envoyer" to build the tree. Moreover, the "log" button opens a new element containing details of calculations. This element is draggable, by clicking on its top, it is movable in all the screen. There also is a help button ("Aide") that point all important elements of the page and quickly describes what they do.
+Arborling is easy to use. Simply put the data in the textarea and the label in the input text.
+Then clickon "Envoyer" to send the request to the server, then the tree appears. It can be enlarge
+by clicking on the icon on the top right of it. There is the possibility of moving every point/
+label of the tree, do not hesitate especially if elements are overlapping. Users can also import 
+CSV file directly in the textarea by clicking on "Importer CSV". If the data are valid, just click
+on "Envoyer" to build the tree. Moreover, the "log" button opens a new element containing details
+of calculations. This element is draggable, by clicking on its top, it is movable in all the
+screen. There also is a help button ("Aide") that point all important elements of the page and
+quickly describes what they do.
